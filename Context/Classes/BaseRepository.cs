@@ -11,7 +11,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         Db = db;
     }
 
-    // Создать сущность в Db 
+    // Создать сущность в Db
     public async Task<bool> Create(T entity)
     {
         await Db.Set<T>().AddAsync(entity);

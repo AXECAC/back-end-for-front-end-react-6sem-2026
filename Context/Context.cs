@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using DataBase;
-using System.Security.Cryptography.X509Certificates;
 namespace Context;
 
 // Класс Context

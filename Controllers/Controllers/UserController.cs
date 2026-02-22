@@ -6,7 +6,7 @@ using Extentions;
 
 namespace Controllers.UserController
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [Authorize]
     [ApiController]
     [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
@@ -24,7 +24,7 @@ namespace Controllers.UserController
         [HttpGet]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> Get()
         {
             var response = await _UserServices.GetUsers();
 
@@ -40,11 +40,11 @@ namespace Controllers.UserController
         }
 
         // GetUserById метод
-        [HttpGet]
+        [HttpGet("{id}")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> Get(int id)
         {
             // Id валидация (Плохой ввод)
             if (id < 1)
@@ -67,11 +67,11 @@ namespace Controllers.UserController
         }
 
         // GetUserByEmail метод
-        [HttpGet]
+        [HttpGet("ByEmail/{email}")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetUserByEmail(string email)
+        public async Task<IActionResult> Get(string email)
         {
             // Email not Valid (Плохой ввод)
             if (!email.IsValidEmail())
@@ -119,11 +119,11 @@ namespace Controllers.UserController
         }
 
         // Edit метод
-        [HttpPut]
+        [HttpPut("{oldEmail}")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status201Created)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> Edit(User userEntity, string oldEmail)
+        public async Task<IActionResult> Update(User userEntity, string oldEmail)
         {
             // User not Valid (Плохой ввод)
             if (!userEntity.IsValid() || !oldEmail.IsValidEmail())
@@ -147,11 +147,11 @@ namespace Controllers.UserController
         }
 
         // Delete метод
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status204NoContent)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             // Id validation (Плохой ввод)
             if (id < 1)

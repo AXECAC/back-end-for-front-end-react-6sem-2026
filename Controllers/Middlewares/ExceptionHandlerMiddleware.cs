@@ -44,7 +44,7 @@ namespace Middlewares
                 {
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
                     Title = "Internal Server Error",
-                    Status = (int)StatusCodes.Status500InternalServerError,
+                    Status = StatusCodes.Status500InternalServerError,
                     Instance = context.Request.Path,
                     Detail = $"Internal server error occured: TraceId : {traceId}; Message : {ex.Message}",
                 };

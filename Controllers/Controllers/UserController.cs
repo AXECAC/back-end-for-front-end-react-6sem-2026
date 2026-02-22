@@ -119,7 +119,7 @@ namespace Controllers.UserController
         }
 
         // Edit метод
-        [HttpPost]
+        [HttpPut]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status201Created)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status422UnprocessableEntity)]

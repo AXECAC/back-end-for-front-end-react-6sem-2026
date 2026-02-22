@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using DotNetEnv;
 using Services;
-using Services.Caching;
-using DataBase;
 using Middlewares;
 using Context;
 
@@ -56,7 +54,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-DotNetEnv.Env.Load();
+Env.Load();
 
 var envVars = new Dictionary<string, string?>
 {
@@ -65,19 +63,10 @@ var envVars = new Dictionary<string, string?>
     ["Postgres:Database"] = Environment.GetEnvironmentVariable("POSTGRES_DB"),
     ["Postgres:Username"] = Environment.GetEnvironmentVariable("POSTGRES_USER"),
     ["Postgres:Password"] = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD"),
-    ["Redis:Host"] = Environment.GetEnvironmentVariable("REDIS_HOST"),
-    ["Redis:Port"] = Environment.GetEnvironmentVariable("REDIS_PORT"),
     ["ApiSettings:Secret"] = Environment.GetEnvironmentVariable("SECRET_KEY")
 };
 
 builder.Configuration.AddInMemoryCollection(envVars!);
-
-var redisHost = builder.Configuration["Redis:Host"];
-var redisPort = builder.Configuration["Redis:Port"];
-var redisConnectionString = $"{redisHost}:{redisPort}";
-
-// Подключение к redis
-builder.AddRedisClient(redisConnectionString);
 
 // Прочитать connection string к postgres
 var connectionString = $"Host={builder.Configuration["Postgres:Host"]};" +
@@ -127,7 +116,6 @@ builder.Services.AddSingleton<IUserServices, UserServices>();
 builder.Services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddSingleton<ITokenServices, TokenServices>();
 builder.Services.AddSingleton<IHashingServices, HashingServices>();
-builder.Services.AddSingleton<ICachingServices<User>, CachingServices<User>>();
 builder.Services.AddSingleton<IAuthServices, AuthServices>();
 
 
@@ -136,10 +124,6 @@ var app = builder.Build();
 //Добавить Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
-// Если вам не нужен debug, добавьте UseSwagger... в этот if
-// if (app.Environment.IsDevelopment())
-// {
-// }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 // Cors

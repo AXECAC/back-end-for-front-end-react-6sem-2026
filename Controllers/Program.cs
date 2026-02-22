@@ -7,6 +7,8 @@ using DotNetEnv;
 using Services;
 using Middlewares;
 using Context;
+using Services.Interfaces;
+using Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,6 +118,8 @@ builder.Services.AddSingleton<IUserServices, UserServices>();
 builder.Services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddSingleton<ITokenServices, TokenServices>();
 builder.Services.AddSingleton<IHashingServices, HashingServices>();
+builder.Services.AddSingleton<IQuoteRepository, QuoteRepository>();
+builder.Services.AddSingleton<IQuoteServices, QuoteServices>();
 builder.Services.AddSingleton<IAuthServices, AuthServices>();
 
 

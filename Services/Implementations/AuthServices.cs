@@ -29,16 +29,12 @@ public class AuthServices : IAuthServices
         // Новый User
         if (userDb == null)
         {
-            // Создать новый User
             user.Id = 0;
             await _UserRepository.Create(user);
-            // Created (201)
             baseResponse = BaseResponse<Tokens>.Created(data: await _TokenServices.GenerateJWTToken(user, secretKey));
         }
-        // Этот email уже существует
         else
         {
-            // Conflict (409)
             baseResponse = BaseResponse<Tokens>.Conflict("This email already exists");
         }
         return baseResponse;
@@ -50,28 +46,22 @@ public class AuthServices : IAuthServices
         User user = _HashingServices.Hashing(form);
 
         BaseResponse<Tokens> baseResponse;
-        // Найти user по email
         var userDb = await _UserRepository.FirstOrDefaultAsync(x => x.Email == user.Email);
 
         // User существует
         if (userDb != null)
         {
-            // Сравнить хэш пароля
             if (user.Password == userDb.Password)
             {
-                // Ok (200)
                 baseResponse = BaseResponse<Tokens>.Ok(data: await _TokenServices.GenerateJWTToken(userDb, secretKey));
             }
             else
             {
-                // Unauthorized (401)
                 baseResponse = BaseResponse<Tokens>.Unauthorized("Bad password");
             }
         }
-        // User не существует
         else
         {
-            // Unauthorized (401)
             baseResponse = BaseResponse<Tokens>.Unauthorized("Email not found");
         }
         return baseResponse;

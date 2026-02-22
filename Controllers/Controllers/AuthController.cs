@@ -91,7 +91,7 @@ namespace Controllers.AuthController
                 // Вернуть токен (200)
                 return Ok(response.Data);
             }
-            // неправильные Email или Password 
+            // неправильные Email или Password
             else
             {
                 // Вернуть Conflict (401)

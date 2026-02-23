@@ -171,5 +171,54 @@ namespace Controllers.UserController
             // Вернуть response 404
             return NotFound();
         }
+
+        [HttpGet]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> MyProfile()
+        {
+            var response = await _UserServices.GetMyProfile();
+
+            if (response.StatusCode == DataBase.StatusCodes.NotFound)
+            {
+                // Вернуть response (404)
+                return NotFound();
+            }
+
+            // Вернуть response 200
+            return Ok(response.Data);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ChangeMyPassword(string newPassword)
+        {
+            var response = await _UserServices.ChangeMyPassword(newPassword);
+
+            if (response.StatusCode == DataBase.StatusCodes.NotFound)
+            {
+                // Вернуть response (404)
+                return NotFound();
+            }
+            // Вернуть response (204)
+            return NoContent();
+        }
+
+        [HttpPut]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> MyProfile(User updatedUser)
+        {
+            var response = await _UserServices.UpdateMyProfile(updatedUser);
+
+            if (response.StatusCode == DataBase.StatusCodes.NotFound)
+            {
+                // Вернуть response (404)
+                return NotFound();
+            }
+            // Вернуть response (204)
+            return NoContent();
+        }
     }
 }

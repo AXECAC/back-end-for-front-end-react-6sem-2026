@@ -81,7 +81,6 @@ public class QuoteServices : IQuoteServices
 
         var quote = new Quote
         {
-            Id = 0,
             QuoteText = quoteText,
             UserId = userId,
             CreationDate = DateTime.Today.ToString("dd.MM.yyyy")

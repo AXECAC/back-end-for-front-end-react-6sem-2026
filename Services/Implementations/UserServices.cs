@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Context;
 using DataBase;
@@ -22,6 +23,73 @@ public class UserServices : IUserServices
     public int GetMyId()
     {
         return Convert.ToInt32(_HttpContextAccessor.HttpContext.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
+    }
+
+    public async Task<IBaseResponse<User>> GetMyProfile()
+    {
+        BaseResponse<User> response;
+
+        int myId = GetMyId();
+
+        var user = await _UserRepository.FirstOrDefaultAsync(us => us.Id == myId);
+
+        if (user == null)
+        {
+            response = BaseResponse<User>.NotFound("User not found");
+            return response;
+        }
+
+        response = BaseResponse<User>.Ok(user);
+        return response;
+    }
+
+    public async Task<IBaseResponse> ChangeMyPassword(string newPassword)
+    {
+        BaseResponse response;
+
+        int myId = GetMyId();
+
+        var user = await _UserRepository.FirstOrDefaultAsync(us => us.Id == myId);
+
+        if (user == null)
+        {
+            response = BaseResponse.NotFound("User not found");
+            return response;
+        }
+
+        user.Password = newPassword;
+        _HashingServices.Hashing(user);
+
+        await _UserRepository.Update(user);
+
+        response = BaseResponse.NoContent();
+        return response;
+    }
+
+    public async Task<IBaseResponse> UpdateMyProfile(User updatedUser)
+    {
+        BaseResponse response;
+
+        int myId = GetMyId();
+
+        var user = await _UserRepository.FirstOrDefaultAsync(us => us.Id == myId);
+
+        if (user == null)
+        {
+            response = BaseResponse.NotFound("User not found");
+            return response;
+        }
+
+        user.Name = updatedUser.Name;
+        user.Email = updatedUser.Email;
+        user.Password = updatedUser.Password;
+        //user.FirstName = updatedUser.FirstName; // TODO: I'm not sure it's there yet
+        //user.SecondName = updatedUser.SecondName;
+
+        await _UserRepository.Update(user);
+
+        response = BaseResponse.NoContent();
+        return response;
     }
 
     public async Task<IBaseResponse<IEnumerable<User>>> GetUsers()

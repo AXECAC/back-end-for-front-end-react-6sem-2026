@@ -3,6 +3,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=8080
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SECRET_KEY=${SECRET_KEY}
     build:
       context: .
       dockerfile: Dockerfile
@@ -35,7 +41,7 @@ services:
       - "80:80"
     volumes:
        - pgadmin:/var/lib/pgadmin
-  
+
 
 volumes:
   pgadmin:

@@ -80,7 +80,8 @@ public class UserServices : IUserServices
             return response;
         }
 
-        user.Name = updatedUser.Name;
+        user.FirstName = updatedUser.FirstName;
+        user.SecondName = updatedUser.SecondName;
         user.Email = updatedUser.Email;
         user.Password = updatedUser.Password;
         //user.FirstName = updatedUser.FirstName; // TODO: I'm not sure it's there yet

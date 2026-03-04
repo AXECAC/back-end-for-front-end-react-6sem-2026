@@ -6,6 +6,12 @@ public interface IUserServices
 {
     int GetMyId();
 
+    Task<IBaseResponse<User>> GetMyProfile();
+
+    Task<IBaseResponse> ChangeMyPassword(string newPassword);
+
+    Task<IBaseResponse> UpdateMyProfile(User updatedUser);
+
     Task<IBaseResponse<IEnumerable<User>>> GetUsers();
 
     Task<IBaseResponse<User>> GetUser(int id);

@@ -172,7 +172,7 @@ namespace Controllers.UserController
             return NotFound();
         }
 
-        [HttpGet]
+        [HttpGet("myprofile")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         public async Task<IActionResult> MyProfile()
@@ -189,7 +189,7 @@ namespace Controllers.UserController
             return Ok(response.Data);
         }
 
-        [HttpPut]
+        [HttpPut("ChangeMyPassword")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ChangeMyPassword(string newPassword)
@@ -205,7 +205,7 @@ namespace Controllers.UserController
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("myprofile")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         public async Task<IActionResult> MyProfile(User updatedUser)

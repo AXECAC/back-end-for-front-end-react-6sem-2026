@@ -3,13 +3,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Context;
 
 // Класс BaseRepository
-public class BaseRepository<T> : IBaseRepository<T> where T : class
+public class BaseRepository<T>(TemplateDbContext db) : IBaseRepository<T> where T : class
 {
-    private readonly TemplateDbContext Db;
-    public BaseRepository(TemplateDbContext db)
-    {
-        Db = db;
-    }
+    private readonly TemplateDbContext Db = db;
 
     // Создать сущность в Db
     public async Task<bool> Create(T entity)

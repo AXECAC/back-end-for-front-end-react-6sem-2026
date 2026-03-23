@@ -2,11 +2,7 @@ using DataBase;
 namespace Context;
 
 // Класс QuoteRepository
-public class QuoteRepository : BaseRepository<Quote>, IQuoteRepository
+public class QuoteRepository(TemplateDbContext db) : BaseRepository<Quote>(db), IQuoteRepository
 {
-    private readonly TemplateDbContext Db;
-    public QuoteRepository(TemplateDbContext db) : base(db)
-    {
-        Db = db;
-    }
+    private readonly TemplateDbContext Db = db;
 }

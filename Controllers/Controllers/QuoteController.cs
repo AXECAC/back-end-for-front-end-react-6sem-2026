@@ -8,14 +8,9 @@ namespace Controllers.QuoteController
     [Authorize]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class QuoteController : Controller
+    public class QuoteController(IQuoteServices quoteServices) : Controller
     {
-        private readonly IQuoteServices _QuoteServices;
-
-        public QuoteController(IQuoteServices quoteServices)
-        {
-            _QuoteServices = quoteServices;
-        }
+        private readonly IQuoteServices _QuoteServices = quoteServices;
 
         [HttpGet("{offset}/{pageLimit}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

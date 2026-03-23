@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Context;
 using DataBase;
@@ -7,20 +6,13 @@ using Extentions;
 namespace Services;
 
 // Класс UserServices
-public class UserServices : IUserServices
+public class UserServices(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository,
+        IHashingServices hashingServices) : IUserServices
 {
-    private readonly IHttpContextAccessor _HttpContextAccessor;
-    private readonly IUserRepository _UserRepository;
-    private readonly IHashingServices _HashingServices;
+    private readonly IHttpContextAccessor _HttpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+    private readonly IUserRepository _UserRepository = userRepository;
+    private readonly IHashingServices _HashingServices = hashingServices;
 
-
-    public UserServices(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository,
-            IHashingServices hashingServices)
-    {
-        _HttpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-        _UserRepository = userRepository;
-        _HashingServices = hashingServices;
-    }
     public int GetMyId()
     {
         return Convert.ToInt32(_HttpContextAccessor.HttpContext.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);

@@ -6,16 +6,10 @@ using Services.Interfaces;
 namespace Services.Implementations;
 
 // Class QuoteServices
-public class QuoteServices : IQuoteServices
+public class QuoteServices(IQuoteRepository quoteRepository, IUserServices userServices) : IQuoteServices
 {
-    private readonly IQuoteRepository _QuoteRepository;
-    private readonly IUserServices _UserServices;
-
-    public QuoteServices(IQuoteRepository quoteRepository, IUserServices userServices)
-    {
-        _QuoteRepository = quoteRepository;
-        _UserServices = userServices;
-    }
+    private readonly IQuoteRepository _QuoteRepository = quoteRepository;
+    private readonly IUserServices _UserServices = userServices;
 
     public async Task<IBaseResponse<IEnumerable<Quotes>>> Get(int offset, int pageLimit)
     {

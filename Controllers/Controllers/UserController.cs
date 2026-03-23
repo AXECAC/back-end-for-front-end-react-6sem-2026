@@ -11,14 +11,9 @@ namespace Controllers.UserController
     [ApiController]
     [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError)]
     // UserController класс контроллер
-    public class UserController : Controller
+    public class UserController(IUserServices userServices) : Controller
     {
-        private readonly IUserServices _UserServices;
-
-        public UserController(IUserServices userServices)
-        {
-            _UserServices = userServices;
-        }
+        private readonly IUserServices _UserServices = userServices;
 
         // GetUsers метод
         [HttpGet]

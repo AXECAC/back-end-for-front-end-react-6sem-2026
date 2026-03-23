@@ -7,16 +7,11 @@ using Context;
 namespace Services;
 
 // Класс TokenServices
-public class TokenServices : ITokenServices
+public class TokenServices(IRefreshTokenRepository refreshTokenRepository) : ITokenServices
 {
-    private readonly IRefreshTokenRepository _RefreshTokenRepository;
+    private readonly IRefreshTokenRepository _RefreshTokenRepository = refreshTokenRepository;
     private readonly int accessTokenTime = 5;
     private readonly int refreshTokenTime = 1440;
-
-    public TokenServices(IRefreshTokenRepository refreshTokenRepository)
-    {
-        _RefreshTokenRepository = refreshTokenRepository;
-    }
 
     public async Task<Tokens> GenerateJWTToken(User user, string secretKey)
     {

@@ -2,11 +2,7 @@ using DataBase;
 namespace Context;
 
 // Класс UserRepository
-public class UserRepository : BaseRepository<User>, IUserRepository
+public class UserRepository(TemplateDbContext db) : BaseRepository<User>(db), IUserRepository
 {
-    private readonly TemplateDbContext Db;
-    public UserRepository(TemplateDbContext db) : base(db)
-    {
-        Db = db;
-    }
+    private readonly TemplateDbContext Db = db;
 }

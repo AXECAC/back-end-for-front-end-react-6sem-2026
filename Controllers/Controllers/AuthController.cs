@@ -3,28 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using Services;
 using DataBase;
 using Extentions;
-using System.Threading.Tasks;
 
 namespace Controllers.AuthController
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     // Класс контроллер AuthController
-    public class AuthController : Controller
+    public class AuthController(IAuthServices authServices, ITokenServices tokenServices,
+            IUserServices userServices, IConfiguration configuration) : Controller
     {
-        private readonly IAuthServices _AuthServices;
-        private readonly IUserServices _UserServices;
-        private readonly ITokenServices _TokenServices;
-        private readonly string? _secretKey;
-
-        public AuthController(IAuthServices authServices, ITokenServices tokenServices,
-                IUserServices userServices, IConfiguration configuration)
-        {
-            _AuthServices = authServices;
-            _UserServices = userServices;
-            _TokenServices = tokenServices;
-            _secretKey = configuration.GetValue<string>("ApiSettings:Secret");
-        }
+        private readonly IAuthServices _AuthServices = authServices;
+        private readonly IUserServices _UserServices = userServices;
+        private readonly ITokenServices _TokenServices = tokenServices;
+        private readonly string? _secretKey = configuration.GetValue<string>("ApiSettings:Secret");
 
         [HttpPost]
         [AllowAnonymous]

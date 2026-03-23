@@ -3,19 +3,12 @@ using DataBase;
 namespace Services;
 
 // Класс AuthServices
-public class AuthServices : IAuthServices
+public class AuthServices(IUserRepository userRepository, IHashingServices hashingServices,
+        ITokenServices tokenServices) : IAuthServices
 {
-    private readonly IUserRepository _UserRepository;
-    private readonly IHashingServices _HashingServices;
-    private readonly ITokenServices _TokenServices;
-
-    public AuthServices(IUserRepository userRepository, IHashingServices hashingServices,
-            ITokenServices tokenServices)
-    {
-        _UserRepository = userRepository;
-        _HashingServices = hashingServices;
-        _TokenServices = tokenServices;
-    }
+    private readonly IUserRepository _UserRepository = userRepository;
+    private readonly IHashingServices _HashingServices = hashingServices;
+    private readonly ITokenServices _TokenServices = tokenServices;
 
     public async Task<IBaseResponse<Tokens>> TryRegister(User user, string secretKey)
     {

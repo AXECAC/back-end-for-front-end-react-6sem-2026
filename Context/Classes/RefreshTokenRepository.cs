@@ -2,11 +2,7 @@ using DataBase;
 namespace Context;
 
 // Класс RefreshTokenRepository
-public class RefreshTokenRepository : BaseRepository<RefreshToken>, IRefreshTokenRepository
+public class RefreshTokenRepository(TemplateDbContext db) : BaseRepository<RefreshToken>(db), IRefreshTokenRepository
 {
-    private readonly TemplateDbContext Db;
-    public RefreshTokenRepository(TemplateDbContext db) : base(db)
-    {
-        Db = db;
-    }
+    private readonly TemplateDbContext Db = db;
 }

@@ -6,6 +6,17 @@ namespace Extentions;
 // Класс UserExtentions
 public static class UserExtentions
 {
+    public static UserPubData ConvertToUserPubData(this User user)
+    {
+        var uPubData = new UserPubData
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            Email = user.Email
+        };
+        return uPubData;
+    }
     // Валидация User
     public static bool IsValid(this User user)
     {

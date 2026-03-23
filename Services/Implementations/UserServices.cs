@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Context;
 using DataBase;
 using System.Security.Claims;
+using Extentions;
 namespace Services;
 
 // Класс UserServices
@@ -25,9 +26,9 @@ public class UserServices : IUserServices
         return Convert.ToInt32(_HttpContextAccessor.HttpContext.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
     }
 
-    public async Task<IBaseResponse<User>> GetMyProfile()
+    public async Task<IBaseResponse<UserPubData>> GetMyProfile()
     {
-        BaseResponse<User> response;
+        BaseResponse<UserPubData> response;
 
         int myId = GetMyId();
 
@@ -35,11 +36,11 @@ public class UserServices : IUserServices
 
         if (user == null)
         {
-            response = BaseResponse<User>.NotFound("User not found");
+            response = BaseResponse<UserPubData>.NotFound("User not found");
             return response;
         }
 
-        response = BaseResponse<User>.Ok(user);
+        response = BaseResponse<UserPubData>.Ok(user.ConvertToUserPubData());
         return response;
     }
 
@@ -84,8 +85,6 @@ public class UserServices : IUserServices
         user.SecondName = updatedUser.SecondName;
         user.Email = updatedUser.Email;
         user.Password = updatedUser.Password;
-        //user.FirstName = updatedUser.FirstName; // TODO: I'm not sure it's there yet
-        //user.SecondName = updatedUser.SecondName;
 
         await _UserRepository.Update(user);
 
@@ -93,34 +92,34 @@ public class UserServices : IUserServices
         return response;
     }
 
-    public async Task<IBaseResponse<IEnumerable<User>>> GetUsers()
+    public async Task<IBaseResponse<IEnumerable<UserPubData>>> GetUsers()
     {
-        BaseResponse<IEnumerable<User>> baseResponse;
+        BaseResponse<IEnumerable<UserPubData>> baseResponse;
         var users = await _UserRepository.Select();
 
         // Ok (204) but 0 elements
         if (!users.Any())
         {
-            baseResponse = BaseResponse<IEnumerable<User>>.NoContent("Find 0 elements");
+            baseResponse = BaseResponse<IEnumerable<UserPubData>>.NoContent("Find 0 elements");
             return baseResponse;
         }
 
-        baseResponse = BaseResponse<IEnumerable<User>>.Ok(users);
+        baseResponse = BaseResponse<IEnumerable<UserPubData>>.Ok(users.Select(UserExtentions.ConvertToUserPubData));
         return baseResponse;
     }
 
-    public async Task<IBaseResponse<User>> GetUser(int id)
+    public async Task<IBaseResponse<UserPubData>> GetUser(int id)
     {
-        BaseResponse<User> baseResponse;
+        BaseResponse<UserPubData> baseResponse;
         var user = await _UserRepository.FirstOrDefaultAsync(x => x.Id == id);
 
         if (user == null)
         {
-            baseResponse = BaseResponse<User>.NotFound("User not found");
+            baseResponse = BaseResponse<UserPubData>.NotFound("User not found");
             return baseResponse;
         }
-        baseResponse = BaseResponse<User>.Ok(user, "User found");
-        baseResponse.Data = user;
+        baseResponse = BaseResponse<UserPubData>.Ok(user.ConvertToUserPubData(), "User found");
+        baseResponse.Data = user.ConvertToUserPubData();
         return baseResponse;
     }
 
@@ -149,17 +148,17 @@ public class UserServices : IUserServices
         return baseResponse;
     }
 
-    public async Task<IBaseResponse<User>> GetUserByEmail(string email)
+    public async Task<IBaseResponse<UserPubData>> GetUserByEmail(string email)
     {
-        BaseResponse<User> baseResponse;
+        BaseResponse<UserPubData> baseResponse;
         var user = await _UserRepository.FirstOrDefaultAsync(x => x.Email == email);
         if (user == null)
         {
-            baseResponse = BaseResponse<User>.NotFound("User not found");
+            baseResponse = BaseResponse<UserPubData>.NotFound("User not found");
             return baseResponse;
         }
 
-        baseResponse = BaseResponse<User>.Ok(user);
+        baseResponse = BaseResponse<UserPubData>.Ok(user.ConvertToUserPubData());
         return baseResponse;
     }
 

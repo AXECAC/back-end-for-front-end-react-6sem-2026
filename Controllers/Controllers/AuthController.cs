@@ -102,6 +102,17 @@ namespace Controllers.AuthController
             return Ok(response.Data);
         }
 
+        [HttpPost]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RefreshAllTokens(string oldRefreshToken)
+        {
+            var response = await _TokenServices.RefreshToken(oldRefreshToken, _secretKey);
+
+            // Вернуть токен (200)
+            return Ok(response.Data);
+        }
+
         [HttpGet]
         [Authorize]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]

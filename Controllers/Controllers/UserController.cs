@@ -184,7 +184,7 @@ namespace Controllers.UserController
             return Ok(response.Data);
         }
 
-        [HttpPut("ChangeMyPassword")]
+        [HttpPatch("ChangeMyPassword")]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
         [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ChangeMyPassword(string newPassword)

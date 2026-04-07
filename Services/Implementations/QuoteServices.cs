@@ -43,13 +43,25 @@ public class QuoteServices(IQuoteRepository quoteRepository, IUserServices userS
         return baseResponse;
     }
 
+
+    public async Task<IBaseResponse<int>> HowMuchQuotes()
+    {
+        IBaseResponse<int> baseResponse;
+
+        var quotes = await _QuoteRepository.GetQueryable().CountAsync();
+
+        baseResponse = BaseResponse<int>.Ok(quotes);
+        return baseResponse;
+    }
+
     public async Task<IBaseResponse<Quotes>> GetRand()
     {
         IBaseResponse<Quotes> baseResponse;
         var randQuote = await _QuoteRepository.GetQueryable().OrderBy(e =>
                 Guid.NewGuid()).FirstOrDefaultAsync();
 
-        if (randQuote == null) {
+        if (randQuote == null)
+        {
             baseResponse = BaseResponse<Quotes>.NotFound("User not found");
             return baseResponse;
         }

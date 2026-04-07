@@ -50,6 +50,14 @@ namespace Controllers.QuoteController
             return NotFound();
         }
 
+        [HttpGet("TotalQuotes")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> TotalQuotes()
+        {
+            var response = await _QuoteServices.HowMuchQuotes();
+            return Ok(response.Data);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

@@ -83,7 +83,7 @@ var connectionString = $"Host={builder.Configuration["Postgres:Host"]};" +
 
 // Подключиться к БД
 builder.Services.AddDbContext<TemplateDbContext>(options =>
-        options.UseNpgsql(connectionString), ServiceLifetime.Singleton);
+        options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
 
 builder.Services.AddHttpContextAccessor();
 
@@ -108,21 +108,21 @@ builder.Services.AddAuthentication(options =>
             });
 
 // Добавить наши Middlewares
-builder.Services.AddSingleton<ExceptionHandlerMiddleware>();
+builder.Services.AddScoped<ExceptionHandlerMiddleware>();
 
 // Добавить наши Logging
 builder.Services.AddLogging(builder => builder.AddConsole());
 builder.Logging.AddConsole();
 
 // Добавить наши Services
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<IUserServices, UserServices>();
-builder.Services.AddSingleton<IRefreshTokenRepository, RefreshTokenRepository>();
-builder.Services.AddSingleton<ITokenServices, TokenServices>();
-builder.Services.AddSingleton<IHashingServices, HashingServices>();
-builder.Services.AddSingleton<IQuoteRepository, QuoteRepository>();
-builder.Services.AddSingleton<IQuoteServices, QuoteServices>();
-builder.Services.AddSingleton<IAuthServices, AuthServices>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<ITokenServices, TokenServices>();
+builder.Services.AddScoped<IHashingServices, HashingServices>();
+builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
+builder.Services.AddScoped<IQuoteServices, QuoteServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
 
 
 var app = builder.Build();
